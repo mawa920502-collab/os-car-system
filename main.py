@@ -302,24 +302,31 @@ with st.sidebar:
     with col1:
         if st.button("🏠 Sprzedajemy.pl", use_container_width=True, key="sprzedajemy_btn"):
             webbrowser.open_new_tab("https://oscar.sprzedajemy.pl/")
+            st.success("Otwieram Sprzedajemy.pl...")
     with col2:
         if st.button("🛒 allegro.pl", use_container_width=True, key="allegro_btn"):
             webbrowser.open_new_tab("https://salescenter.allegro.com/my-assortment?limit=20&publication.status=ACTIVE&sellingMode.format=BUY_NOW&context.marketplace=allegro-pl")
+            st.success("Otwieram Allegro...")
     
     if st.button("📋 Zamówienia allegro", use_container_width=True, key="zamowienia_btn"):
         webbrowser.open_new_tab("https://salescenter.allegro.com/orders")
+        st.success("Otwieram zamówienia...")
     
     if st.button("📊 Ovoko", use_container_width=True, key="ovoko_btn"):
         webbrowser.open_new_tab("https://oscar.rrr.lt/v2")
+        st.success("Otwieram Ovoko...")
     
     if st.button("🔧 Polcar", use_container_width=True, key="polcar_btn"):
         webbrowser.open_new_tab("https://catalog.polcar.com/polcar")
+        st.success("Otwieram Polcar...")
     
     if st.button("🧾 Wystaw fakture", use_container_width=True, key="faktura_btn"):
         webbrowser.open_new_tab("https://kontakt-oscar.fakturownia.pl/")
+        st.success("Otwieram fakturownię...")
     
     if st.button("📦 BaseLinker", use_container_width=True, key="baselinker_btn"):
         webbrowser.open_new_tab("https://panel-f.baselinker.com/index.php")
+        st.success("Otwieram BaseLinker...")
     
     st.markdown("---")
     
@@ -331,25 +338,31 @@ with st.sidebar:
     with col_s1:
         if st.button("📦 DHL", use_container_width=True, key="dhl_btn"):
             webbrowser.open_new_tab("https://dhl24.com.pl/pl/uzytkownik/zaloguj.html")
+            st.success("Otwieram DHL...")
     with col_s2:
         if st.button("🚚 AmbroExpress", use_container_width=True, key="ambro_btn"):
             webbrowser.open_new_tab("https://ambro.opennet.pl/Default.aspx")
+            st.success("Otwieram AmbroExpress...")
     
     col_s3, col_s4 = st.columns(2)
     with col_s3:
         if st.button("📮 BLpaczka", use_container_width=True, key="blpaczka_btn"):
             webbrowser.open_new_tab("https://blpaczka.com/panel")
+            st.success("Otwieram BLpaczka...")
     with col_s4:
         if st.button("📦 Sendit", use_container_width=True, key="sendit_btn"):
             webbrowser.open_new_tab("https://panel.sendit.pl/logowanie")
+            st.success("Otwieram Sendit...")
     
     col_s5, col_s6 = st.columns(2)
     with col_s5:
         if st.button("📦 Polkurier", use_container_width=True, key="polkurier_btn"):
             webbrowser.open_new_tab("https://www.polkurier.pl/logowanie")
+            st.success("Otwieram Polkurier...")
     with col_s6:
         if st.button("🚛 CTL Group", use_container_width=True, key="ctl_btn"):
             webbrowser.open_new_tab("https://www.ctlgroup.pl/customers/login")
+            st.success("Otwieram CTL Group...")
     
     st.markdown('</div>', unsafe_allow_html=True)
     
@@ -397,34 +410,36 @@ with col1:
             st.warning("❌ Brak ofert dla podanej frazy")
         elif ids_title != ids_id:
             if len(ids_title) == 1:
-                st.success("🎯 Otwieram jedyną ofertę")
+                st.success("🎯 Znaleziono 1 ofertę")
                 link_to_open = urls_title[0]
             elif len(ids_id) == 1:
-                st.success("🎯 Otwieram ofertę po numerze")
+                st.success("🎯 Znaleziono 1 ofertę po numerze")
                 link_to_open = urls_id[0]
             elif len(ids_title) > len(ids_id):
-                st.success("📖 Otwieram listę ofert z tytułów")
+                st.success("📖 Otwórz listę ofert z tytułów")
                 link_to_open = sprzedajemy_result["url_title"]
             else:
-                st.success("🔢 Otwieram listę ofert z numerów")
+                st.success("🔢 Otwórz listę ofert z numerów")
                 link_to_open = sprzedajemy_result["url_id"]
         else:
             st.info(f"📊 Oferty znalezione: {ids_title[:3]}")
             link_to_open = sprzedajemy_result["url_title"]
 
-        if link_to_open and not st.session_state.link_opened:
-            st.session_state.link_opened = True
-            webbrowser.open_new_tab(link_to_open)
+        # ✅ PRZYCISK ZAMIAST AUTOMATYCZNEGO OTWIERANIA
+        if link_to_open:
+            if st.button("🌐 OTWÓRZ OFERTĘ SPRZEDAJEMY.PL", use_container_width=True, key=f"open_sprzedajemy_{int(time.time())}"):
+                webbrowser.open_new_tab(link_to_open)
+                st.success("✅ Otwieram ofertę...")
 
         allegro_result = current_search_results["allegro"]
         if allegro_result:
             st.markdown(f"#### 🛒 allegro.pl")
             st.markdown(f"**Gotowe wyszukiwanie:** Twoje oferty z filtrem")
             
-            # ✅ NOWY KOLOR - NIEBIESKI ZAMIast CZERWONEGO
+            # ✅ PRZYCISK ALLEGRO
             if st.button("🚀 OTWÓRZ ALLEGRO", key="open_allegro", use_container_width=True):
                 webbrowser.open_new_tab(allegro_result['link'])
-                st.success("Otwieram allegro.pl...")
+                st.success("✅ Otwieram allegro.pl...")
 
     if st.session_state.search_query:
         if st.button("➕ DODAJ DO BAZY JAKO SPRZEDANE", 
@@ -587,8 +602,11 @@ with col2:
                     st.text_input("**Link do oferty:**", value=row["link"], key=link_key,
                                 on_change=lambda i=idx, k=link_key: save_field(i, k, "link"))
                     
+                    # ✅ PRZYCISK ZAMIAST LINK_BUTTON
                     if isinstance(row["link"], str) and row["link"].startswith("http"):
-                        st.link_button("🔗 Otwórz ofertę", url=row["link"])
+                        if st.button("🔗 OTWÓRZ OFERTĘ", key=f"open_offer_{idx}", use_container_width=True):
+                            webbrowser.open_new_tab(row["link"])
+                            st.success("Otwieram...")
                     else:
                         st.caption("🔗 Brak linku")
                     
